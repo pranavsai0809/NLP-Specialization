@@ -6,6 +6,8 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.tokenize import TweetTokenizer
 
+import numpy as np
+
 
 def process_tweet(tweet):
     stemmer = PorterStemmer()
@@ -25,3 +27,20 @@ def process_tweet(tweet):
             tweets_clean.append(stem_word)
 
     return tweets_clean
+
+
+def build_freqs(tweets , ys):
+
+    yslist = np.squeeze(ys).tolist()
+
+    freqs = {}
+
+    for y, tweet in zip(yslist,tweets):
+        for word in process_tweet(tweet):
+            pair =(word,y)
+            if pair in freqs:
+                freqs[pair] += 1
+            else:
+                freqs[pair] = 1
+    
+    return freqs
